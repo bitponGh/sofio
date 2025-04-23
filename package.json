@@ -1,0 +1,8 @@
+{
+  "name": "sofio-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "mongodb": "^5.7.0"
+  }
+}

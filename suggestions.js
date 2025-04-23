@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
   const client = new MongoClient(uri);
   try {
     await client.connect();
-    const collection = client.db("sofio").collection("globalitems");
+    const collection = client.db("globaldb").collection("globalitems");
     const results = await collection
       .find({ name: { $regex: query, $options: "i" } })
       .limit(10)

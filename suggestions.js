@@ -22,4 +22,7 @@ module.exports = async (req, res) => {
   } finally {
     await client.close();
   }
+  if (!process.env.MONGODB_URI) {
+    return res.status(500).json({ error: "MONGODB_URI ist nicht gesetzt" });
+  }
 };

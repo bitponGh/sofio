@@ -2,9 +2,8 @@
   "name": "sofio-api",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "vercel-build": "echo 'Skip build step'"
+    "vercel-build": "echo 'skip'"
   },
   "dependencies": {
     "mongodb": "^5.7.0"

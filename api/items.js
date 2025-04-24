@@ -19,7 +19,7 @@ export default async function handler(req, res) {
   const client = new MongoClient(uri);
   try {
     await client.connect();
-    const collection = client.db("globaldb").collection("globalitems");
+    const collection = client.db("globaldb").collection("globalItems");
 
     // Prüfen, ob ein Item mit gleichem Namen existiert (case-insensitive)
     const exists = await collection.findOne({ name: { $regex: `^${name}$`, $options: "i" } });

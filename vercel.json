@@ -2,14 +2,22 @@
   "version": 2,
   "builds": [
     {
-      "src": "/api/suggestions.js",
+      "src": "api/suggestions.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/items.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/suggestions",
-      "dest": "suggestions.js"
+      "dest": "api/suggestions.js"
+    },
+    {
+      "src": "/api/items",
+      "dest": "api/items.js"
     }
   ]
 }

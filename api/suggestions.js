@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
   const client = new MongoClient(uri);
   try {
     await client.connect();
-    const collection = client.db("sofio").collection("globalitems");
+    const collection = client.db("globaldb").collection("globalitems");
     const results = await collection
       .find({ name: { $regex: query, $options: "i" } })
       .limit(10)
@@ -21,5 +21,8 @@ module.exports = async (req, res) => {
     res.status(500).json({ error: "Interner Serverfehler" });
   } finally {
     await client.close();
+  }
+  if (!process.env.MONGODB_URI) {
+    return res.status(500).json({ error: "MONGODB_URI ist nicht gesetzt" });
   }
 };

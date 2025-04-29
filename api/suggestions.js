@@ -18,7 +18,7 @@ export default async function handler(req, res) {
       const collection = db.collection("items");
 
       const results = await collection
-        .find({ name: { $regex: `^${query}`, $options: "i" } })
+        .find({ name: { $regex: query, $options: "i" } })
         .sort({ count: -1 })
         .limit(10)
         .toArray();

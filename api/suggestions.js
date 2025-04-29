@@ -5,6 +5,33 @@ const client = new MongoClient(uri);
 const dbName = "globalitems";
 
 export default async function handler(req, res) {
+  if (req.method === "GET") {
+    const { query } = req.query;
+
+    if (!query) {
+      return res.status(400).json({ error: "Missing query" });
+    }
+
+    try {
+      await client.connect();
+      const db = client.db(dbName);
+      const collection = db.collection("items");
+
+      const results = await collection
+        .find({ name: { $regex: `^${query}`, $options: "i" } })
+        .sort({ count: -1 })
+        .limit(10)
+        .toArray();
+
+      return res.status(200).json(results);
+    } catch (error) {
+      console.error("MongoDB Error (GET):", error);
+      return res.status(500).json({ error: "Database error (GET)" });
+    } finally {
+      await client.close();
+    }
+  }
+
   if (req.method === "POST") {
     const { name, category } = req.body;
 
@@ -17,9 +44,8 @@ export default async function handler(req, res) {
       const db = client.db(dbName);
       const collection = db.collection("items");
 
-      // Versuche das Item zu erhöhen oder anzulegen
       const result = await collection.updateOne(
-        { name: name },
+        { name },
         {
           $setOnInsert: {
             name,
@@ -33,8 +59,8 @@ export default async function handler(req, res) {
 
       return res.status(200).json({ success: true, upserted: result.upsertedCount > 0 });
     } catch (error) {
-      console.error("MongoDB Error:", error);
-      return res.status(500).json({ error: "Database error" });
+      console.error("MongoDB Error (POST):", error);
+      return res.status(500).json({ error: "Database error (POST)" });
     } finally {
       await client.close();
     }

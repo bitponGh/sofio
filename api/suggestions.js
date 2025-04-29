@@ -2,7 +2,7 @@ import { MongoClient } from "mongodb";
 
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
-const dbName = "globalitems";
+const dbName = "globaldb";
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     try {
       await client.connect();
       const db = client.db(dbName);
-      const collection = db.collection("items");
+      const collection = db.collection("globalItems");
 
       const results = await collection
         .find({ name: { $regex: query, $options: "i" } })
@@ -42,7 +42,7 @@ export default async function handler(req, res) {
     try {
       await client.connect();
       const db = client.db(dbName);
-      const collection = db.collection("items");
+      const collection = db.collection("globalItems");
 
       const result = await collection.updateOne(
         { name },

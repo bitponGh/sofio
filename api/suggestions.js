@@ -23,7 +23,14 @@ export default async function handler(req, res) {
         .limit(10)
         .toArray();
 
-      return res.status(200).json(results);
+      // Transformiere für Swift-kompatibles JSON
+      const transformed = results.map((item) => ({
+        id: item._id.toString(),
+        name: item.name,
+        category: item.category || null
+      }));
+
+      return res.status(200).json(transformed);
     } catch (error) {
       console.error("MongoDB Error (GET):", error);
       return res.status(500).json({ error: "Database error (GET)" });
